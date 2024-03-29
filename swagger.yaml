@@ -1,0 +1,118 @@
+swagger: '2.0'
+info:
+  title: Job Management API
+  description: |
+    This is an API for managing job listings. It allows auditors to create, read, update, and delete jobs. 
+    (API Endpoints cannot actually work through the Swagger tester as the API server is not hosted. API code included in the same .zip with this documentation.)
+    
+    **Warning:** For the `utc` field in the Job object, frontend users must convert all times to UTC and include them in this field when necessary.
+  
+  version: 1.0.0
+tags:
+  - name: Jobs
+    description: Everything about your Jobs
+paths:
+  /jobs/create:
+    post:
+      tags:
+        - Jobs
+      summary: Create a new job
+      operationId: createJob
+      parameters:
+        - in: body
+          name: job
+          description: The job details to create.
+          required: true
+          schema:
+            $ref: '#/definitions/Job'
+      responses:
+        201:
+          description: Job created
+        400:
+          description: Invalid input, object invalid
+        409:
+          description: An existing item already exists
+  /jobs:
+    get:
+      tags:
+        - Jobs
+      summary: Get all jobs
+      operationId: getJobs
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Job'
+        400:
+          description: Invalid status value
+  /jobs/update/{id}:
+    put:
+      tags:
+        - Jobs
+      summary: Update an existing job
+      operationId: updateJob
+      parameters:
+        - in: path
+          name: id
+          description: ID of job to return
+          required: true
+          type: integer
+        - in: body
+          name: job
+          description: Job object that needs to be added to the store
+          required: true
+          schema:
+            $ref: '#/definitions/Job'
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Job not found
+        405:
+          description: Validation exception
+  /jobs/delete/{id}:
+    delete:
+      tags:
+        - Jobs
+      summary: Deletes a job
+      operationId: deleteJob
+      parameters:
+        - in: path
+          name: id
+          description: Job id to delete
+          required: true
+          type: integer
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Job not found
+definitions:
+  Job:
+    type: object
+    required:
+      - name
+      - date
+      - status
+      - assesment
+      - utc
+    properties:
+      name:
+        type: string
+        description: The name of the job
+      date:
+        type: string
+        format: date
+        description: The date of the job in YYYY-MM-DD format
+      status:
+        type: boolean
+        description: The status of the job
+      assesment:
+        type: string
+        description: The assessment of the job by the auditor
+      utc:
+        type: string
+        description: The UTC time of the editor who created the job or last edited it. **Note:** Frontend users must convert all times to UTC and include them in this field when necessary.
+  

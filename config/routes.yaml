@@ -1,0 +1,25 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+app_jobs_view:
+    path: /jobs
+    controller: App\Controller\JobsController::read
+    methods: GET
+
+app_jobs_index:
+    path: /jobs/create
+    controller: App\Controller\JobsController::create
+    methods: POST
+
+app_jobs_delete:
+    path: /jobs/delete/{id}
+    controller: App\Controller\JobsController::delete
+    methods: DELETE
+
+
+app_jobs_update:
+    path: /jobs/update/{id}
+    controller: App\Controller\JobsController::update
